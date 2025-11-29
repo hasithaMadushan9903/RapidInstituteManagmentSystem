@@ -1,0 +1,67 @@
+<div *ngIf="isPDFProcesing">
+    <img src="../../../assets/loading.gif" alt="" srcset="" class="lodingGif">
+</div>
+<div *ngIf="!isPDFProcesing">
+    <div class="receipt-container" [id]="i+'div'" *ngFor="let pdf of pdfData; let i = index" >
+    <div class="receipt-header">
+      <h2>Income Report</h2>
+    </div>
+  
+    <div class="grid">
+      <div class="col-4">
+      </div>
+      <div class="col-4"></div>
+      <div class="col-4">
+        Date : {{date | date : 'MMMM d, y'}}
+      </div>
+    </div>
+  
+    <div class="grid mt-4">
+      <div class="col-12">
+        <table class="p-mb-4 tabel-style">
+          <thead>
+            <tr>
+              <th class="tabel-head-style text-sm text-center" >Student Name</th>
+              <th class="text-center tabel-head-style text-sm">Student Code</th>
+              <th class="tabel-head-style text-sm text-center" >Course Name</th>
+              <th class="tabel-head-style text-sm text-center" >Course Code</th>
+              <th class="tabel-head-style text-sm text-center" >Recipt Number</th>
+              <th class="tabel-head-style text-sm text-center" >Paid Amounnt</th>
+              <th class="tabel-head-style text-sm text-center" >Payment Category</th>
+              <th class="tabel-head-style text-sm text-center" >Payed Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of pdf.incomeReportDataForFrontdeskOfficerVM">
+              <td class="tabel-body-style text-sm text-center" >{{ row.studnetName }}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.studentCode}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.courseName}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.courseCode}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.reciptNumber}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.paidAmount}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.payementCategory}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.payedDate | date :'MMMM d y'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- <div class="grid">
+      <div class="col-4"></div>
+      <div class="col-4 text-center font-bold">
+        Total Income : {{totalIncome}}
+      </div>
+    </div> -->
+  
+    <!-- <div class="grid mt-4" *ngIf="i==pdfData.length-1">
+      <div class="col-12">
+        <p-chart type="bar" [data]="classFeeChartData" [options]="basicOptions" />
+      </div>
+      <div class="col-12 mt-4 flex justify-content-end">
+        ..................................<br>
+        Signature
+      </div>
+    </div> -->
+</div>
+</div>

@@ -1,0 +1,51 @@
+.receipt-container {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm;
+    margin: auto;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: white;
+    font-family: Arial, sans-serif;
+  }
+  
+  .receipt-header {
+    text-align: center;
+  }
+  
+  .customer-details {
+    margin-bottom: 20px;
+  }
+  
+  .totals {
+    width: 50%;
+    margin-top: 20px;
+  }
+
+  .logo{
+    width: 20%;
+    height: 20%;
+  }
+
+  .tabel-style{
+    width: 100%;
+  }
+
+  .tabel-head-style{
+     border-bottom: 1px solid #dee2e6; 
+     border-top: 1px solid #dee2e6;
+     background: #f8f9fa;
+     padding-top: 5px;
+     padding-bottom: 5px;
+  }
+
+  .tabel-body-style{
+    border-bottom: 1px solid #dee2e6; 
+    border-top: 1px solid #dee2e6;
+    padding-top: 5px;
+    padding-bottom: 5px;
+ }
+
+ .boder-up{
+  border-top: 1px solid #dee2e6; 
+ }

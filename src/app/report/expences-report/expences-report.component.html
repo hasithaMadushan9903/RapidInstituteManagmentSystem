@@ -1,0 +1,78 @@
+<div class="receipt-container" [id]="i+'div'" *ngFor="let pdf of pdfData; let i = index">
+    <div class="receipt-header">
+      <h2>Expenses Report</h2>
+    </div>
+  
+    <div class="grid">
+      <div class="col-5">
+        From Date : {{fromDate | date : 'MMMM d, y'}}
+      </div>
+      <div class="col-3"></div>
+      <div class="col-4">
+        To Date : {{getToDtae() | date : 'MMMM d, y'}}
+      </div>
+    </div>
+  
+    <div class="grid mt-4">
+      <div class="col-12">
+        <table class="p-mb-4 tabel-style">
+          <thead>
+            <tr>
+              <th rowspan="2" class="tabel-head-style text-sm text-center" >Course Code</th>
+              <th colspan="12" class="text-center tabel-head-style text-sm">Month</th>
+              <th rowspan="2" class="tabel-head-style text-sm text-center" >Total</th>
+            </tr>
+            <tr>
+                <th class="tabel-head-style text-sm text-center" >Jan</th>
+                <th class="tabel-head-style text-sm text-center" >Feb</th>
+                <th class="tabel-head-style text-sm text-center" >Mar</th>
+                <th class="tabel-head-style text-sm text-center" >Apr</th>
+                <th class="tabel-head-style text-sm text-center" >May</th>
+                <th class="tabel-head-style text-sm text-center" >Jun</th>
+                <th class="tabel-head-style text-sm text-center" >Jul</th>
+                <th class="tabel-head-style text-sm text-center" >Aug</th>
+                <th class="tabel-head-style text-sm text-center" >Sap</th>
+                <th class="tabel-head-style text-sm text-center" >Oct</th>
+                <th class="tabel-head-style text-sm text-center" >Nov</th>
+                <th class="tabel-head-style text-sm text-center" >Dec</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of pdf.incomeData">
+              <td class="tabel-body-style text-sm text-center" >{{ row.descriptiopn }}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.janAmount}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.febAmount}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.marAmount}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.aprAmount}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.marAmount}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.junAmount}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.julAmount}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.augAmount}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.sepAmount}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.octAmount}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.novAmount}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.decAmount}}</td>
+              <td class="tabel-body-style text-sm text-center" >{{row.total}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="col-4"></div>
+      <div class="col-4 text-center font-bold">
+        Total expenses : {{totalIncome}}
+      </div>
+    </div>
+  
+    <div class="grid mt-4" *ngIf="i==pdfData.length-1">
+      <div class="col-12">
+        <p-chart type="bar" [data]="classFeeChartData" [options]="basicOptions" />
+      </div>
+      <div class="col-12 mt-4 flex justify-content-end">
+        ..................................<br>
+        Signature
+      </div>
+    </div>
+  </div>

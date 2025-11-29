@@ -1,0 +1,238 @@
+<div *ngIf="isLoading" class="loading">
+    <img src="../../assets/giphy.gif" alt="" srcset="" class="lodingGif">
+</div>
+<div *ngIf="!isLoading">
+    <div class="grid">
+        <div class="col-12 background-navbar">
+            <div class="grid">
+                <div class="col-10"></div>
+                <div class="col-2 text-right" >
+                    <div class="mr-4">
+                        <span class="navbarText mr-3" (click)="op.toggle($event)">Hello {{name}}</span>
+                        <i class="fa-solid fa-caret-down fa-lg" style="color: aliceblue;" (click)="op.toggle($event)"></i>
+                        <p-overlayPanel #op>
+                            <div>
+                                <i class="fa-solid fa-power-off option"></i> 
+                                <button class="option" (click)="logout()">Logout</button>
+                                <button class="option" (click)="logout()"></button>
+                            </div>
+                            <div class="mt-4">
+                                <i class="fa-solid fa-key option"></i>
+                                <button class="option" (click)="openPasswordChange()">Change Password</button>
+                                <button class="option"></button>
+                                <button class="option"></button>
+                            </div>
+                            <div class="ml-2">
+                                <i class="fa-solid fa-circle-user"></i> 
+                                <button class="option" (click)="openProfile()">Profile</button>
+                            </div>
+                        </p-overlayPanel>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="grid main-container">
+        <div class="col-2 sideBar mt-3">
+            <br>
+            <div *ngFor="let appIcon of appIcons">
+                <div *ngIf="isAllowed(appIcon.id)">
+                    <button 
+                    (click)="changeModule(appIcon.id , appIcon.name)"
+                    [ngClass]="{ 'selected_fontColor ml-4': selectedModuleEnum == appIcon.id, 'sideBarText ml-4': selectedModuleEnum != appIcon.id }">
+                    <i [className]="appIcon.icon"></i> &nbsp; {{appIcon.name}}
+                    </button><br><br>
+                </div>
+            </div>
+        </div>
+        <div class="col-10 content_area">
+            <p-toast></p-toast>
+            <router-outlet ></router-outlet>
+            <!-- <app-dashboard *ngIf="selectedModuleEnum === 1"></app-dashboard>
+            <app-manage-student *ngIf="selectedModuleEnum === 2"></app-manage-student>
+            <app-manage-course *ngIf="selectedModuleEnum === 3"></app-manage-course>
+            <app-manage-hall *ngIf="selectedModuleEnum === 4"></app-manage-hall>
+            <app-manage-subject *ngIf="selectedModuleEnum === 5"></app-manage-subject>
+            <app-manage-teachers *ngIf="selectedModuleEnum === 6"></app-manage-teachers>
+            <app-manage-enrolment *ngIf="selectedModuleEnum === 7"></app-manage-enrolment>
+            <app-manage-grade *ngIf="selectedModuleEnum === 8"></app-manage-grade>
+            <app-manage-class-fee *ngIf="selectedModuleEnum === 9"></app-manage-class-fee>
+            <app-manage-attendance *ngIf="selectedModuleEnum === 10"></app-manage-attendance>
+            <app-manage-role *ngIf="selectedModuleEnum === 11"></app-manage-role>
+            <app-manage-other-employee *ngIf="selectedModuleEnum === 12"></app-manage-other-employee>
+            <app-app-icons *ngIf="selectedModuleEnum === 13"></app-app-icons>
+            <app-manage-action *ngIf="selectedModuleEnum === 14"></app-manage-action>
+            <app-manage-privilage *ngIf="selectedModuleEnum === 15"></app-manage-privilage> -->
+        </div>
+    </div>
+
+    <p-dialog header="Password Change" [(visible)]="isPasswordChangeOpen" [style]="{width: '50vw'}" [modal]="true" (onHide)="closePassWordChangePopup()">
+        <p-steps [model]="steps" [readonly]="true" [(activeIndex)]="activeStepIndex"></p-steps>
+
+        <div *ngIf="activeStepIndex == 0">
+            <div class="grid ml-3 mr-3 mt-7">
+                <div class="col-12 p-float-label" [formGroup]="loginForm">
+                    <input type="password" pInputText class="inputsStyle" id="password" formControlName="password"> 
+                    <label For="password">Enter Your Password</label>
+                </div>
+            </div>
+    
+            <div class="grid ml-3 mr-3 mt-7">
+                <div class="col-6 align-content-end">
+                    
+                </div>
+                <div class="col-6 flex justify-content-end">
+                    <button label="Reset" class="p-button-secondary mr-3" pButton (click)="reset()"></button>
+                    <button label="Varify Password" class="p-button-success" [disabled]="!loginForm.valid" pButton (click)="checkPassword()"></button>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="activeStepIndex == 1">
+            <div class="grid ml-3 mr-3 mt-7">
+                <div class="col-12 p-float-label" [formGroup]="passwordChangeForm">
+                    <input type="password" pInputText class="inputsStyle" id="newPassword" formControlName="newPassword"> 
+                    <label For="password">Enter New Password</label>
+                </div>
+            </div>
+            <div class="grid ml-3 mr-3 mt-4">
+                <div class="col-12 p-float-label" [formGroup]="passwordChangeForm">
+                    <input type="password" pInputText class="inputsStyle" id="confirmPassword" formControlName="confirmPassword"> 
+                    <label For="password">Confirm New Password</label>
+                </div>
+            </div>
+    
+            <div class="grid ml-3 mr-3 mt-4">
+                <div class="col-8 align-content-end">     
+                </div>
+                <div class="col-4">
+                    <button label="Reset" class="p-button-secondary mr-4" pButton (click)="reset()"></button>
+                    <button label="Varify Password" class="p-button-success" [disabled]="!passwordChangeForm.valid" pButton (click)="changePassword()"></button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="isUpdating" >
+            <img src="../../assets/giphy.gif" alt="" srcset="" class="lodingGif">
+        </div>
+    </p-dialog>
+
+    <p-dialog header="Profile" [(visible)]="isProfileOpen" [style]="{width: '50vw'}" [modal]="true" (onHide)="closeProfilePopup()">
+        <div class="grid">
+            
+            <div class="col-6 border-right-color-black">
+                <div class="grid">
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <div class="profile-picture">
+                            <img src="http://localhost:8080/images/{{profilePictureName}}" alt="">
+                        </div>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+                <div class="grid">
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <label class="custom-file-upload">
+                          Choose File
+                          <input type="file" id="myFile" (change)="fileChangeEvent($event)"/>
+                        </label>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="grid">
+                    <div class="col-6">
+                        <b>Full Name</b>
+                    </div>
+                    <div class="col-6 eplise" (mouseenter)="op2.toggle($event)" (mouseleave)="op2.hide()">
+                        : {{logedDetails?.fullName}}
+                    </div>
+
+                    <p-overlayPanel #op2 [style]="{width: '15vw'}">
+                        <ng-template pTemplate="content">
+                            <div class="tooltip-container tooltipContent">
+                                {{logedDetails?.fullName}}
+                            </div>
+                        </ng-template>
+                    </p-overlayPanel>
+                </div>
+                <div class="grid">
+                    <div class="col-6">
+                        <b>User Code</b>
+                    </div>
+                    <div class="col-6">
+                        : {{logedDetails?.usercode}}
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="col-6">
+                        <b>Joined Date</b>
+                    </div>
+                    <div class="col-6">
+                        : {{logedDetails?.joinedDate | date : 'MMMM d, y'}}
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="col-6">
+                        <b>Gender</b>
+                    </div>
+                    <div class="col-6">
+                        : {{logedDetails?.gender}}
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="col-6">
+                        <b>Birth Day</b>
+                    </div>
+                    <div class="col-6">
+                        : {{logedDetails?.birthday}}
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="col-6">
+                        <b>Email Address</b>
+                    </div>
+                    <div class="col-6 eplise" (mouseenter)="op1.toggle($event)" (mouseleave)="op1.hide()">
+                        : {{logedDetails?.email}}
+                    </div>
+
+                    <p-overlayPanel #op1 [style]="{width: '15vw'}">
+                        <ng-template pTemplate="content">
+                            <div class="tooltip-container tooltipContent">
+                                {{logedDetails?.email}}
+                            </div>
+                        </ng-template>
+                    </p-overlayPanel>
+                </div>
+            </div>
+        </div>
+
+    </p-dialog>
+
+    <p-dialog [(visible)]="isCropOpen" [style]="{width: '100vw', height:'100vh'}" [modal]="true" (onHide)="closeCrop()">
+        <div class="grid">
+            <div class="col-6">
+                <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="1" format="png" (imageCropped)="imageCropped($event)"></image-cropper>
+            </div>
+            <div class="col-6">
+                <div class="grid">
+                    <div class="col-12">
+                        <h3 class="text-center">Preview</h3>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div *ngIf="croppedImage" class="mt-2">
+                        <div class="profile-picture-preveiw">
+                            <img [src]="croppedImage" alt="Preview" />
+                        </div>
+                    </div>
+                    <div *ngIf="croppedImage" class="mt-2">
+                        <button class="btn btn-primary" (click)="uploadCroppedImage()">Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-dialog>
+</div>

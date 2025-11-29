@@ -1,0 +1,107 @@
+<div class="receipt-container" [id]="i+'div'" *ngFor="let pdf of pdfData; let i = index">
+    <div class="receipt-header">
+      <h2>Quiz Report</h2>
+    </div>
+  
+    <div class="grid">
+      <div class="col-4">
+      </div>
+      <div class="col-4"></div>
+      <div class="col-4">
+        Date : {{date | date : 'MMMM d, y'}}
+      </div>
+    </div>
+  
+    <div class="grid mt-4">
+      <div class="col-12">
+        <p-table [value]="pdf.managerData?pdf.managerData:[]" class="p-mb-4">
+          <ng-template pTemplate="header">
+            <tr>
+              <th rowspan="2">Course Code</th>
+              <th rowspan="2">Quiz Count</th>
+              <th rowspan="2">Attempt Count</th>
+              <th colspan="5" class="text-center">Passes</th>
+            </tr>
+            <tr>
+              <th>A Passes</th>
+              <th>B Passes</th>
+              <th>C Passes</th>
+              <th>S Passes</th>
+              <th>F Passes</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row>
+            <tr>
+              <td>{{ row.courseCode }}</td>
+              <td>{{ row.quizCount }}</td>
+              <td>{{ row.attemptCount }}</td>
+              <td>{{ row.noOfAPasses }}</td>
+              <td>{{ row.noOfBPasses }}</td>
+              <td>{{ row.noOfCPasses }}</td>
+              <td>{{ row.noOfSPasses }}</td>
+              <td>{{ row.noOfFPasses }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  
+    <div class="grid mt-4" *ngIf="i==pdfData.length-1">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <div class="grid">
+            <div class="col-1"></div>
+            <div class="col-2">
+                <div class="grid">
+                    <b>
+                        <div class="col-12 font-bold">Avg of A passes :</div>
+                        <div class="col-12 font-bold">{{(passesCount[0]/totalQuizCount)*100 | number:'1.2-2' }}%</div>
+                    </b>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="grid">
+                    <div class="col-12 font-bold">Avg of B passes :</div>
+                    <div class="col-12 font-bold">{{(passesCount[1]/totalQuizCount)*100 | number:'1.2-2' }}%</div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="grid">
+                    <div class="col-12 font-bold">Avg of C passes :</div>
+                    <div class="col-12 font-bold">{{(passesCount[2]/totalQuizCount)*100 | number:'1.2-2' }}%</div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="grid">
+                    <div class="col-12 font-bold">Avg of S passes :</div>
+                    <div class="col-12 font-bold">{{(passesCount[3]/totalQuizCount)*100 | number:'1.2-2' }}%</div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="grid">
+                    <div class="col-12 font-bold">Avg of F passes :</div>
+                    <div class="col-12 font-bold">{{(passesCount[4]/totalQuizCount)*100 | number:'1.2-2' }}%</div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+        </div>
+      </div>
+      <div class="col-1"></div>
+    </div>
+  
+    <div class="grid mt-4" *ngIf="i==pdfData.length-1">
+      <div class="col-1"></div>
+      <div class="col-5">
+        <p-chart type="line" [data]="classFeeChartData" [options]="basicOptions"  />
+      </div>
+      <div class="col-5">
+        <p-chart type="pie" [data]="classFeeChartData" [options]="basicOptions" [plugins]="[ChartDataLabels]" class="custom-chart" />
+      </div>
+    </div>
+    <div class="grid">
+        <div class="col-12 mt-4 flex justify-content-end">
+            ..................................<br>
+            Signature
+          </div>
+    </div>
+  </div>

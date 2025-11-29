@@ -1,0 +1,68 @@
+
+
+<div class="grid mt-6">
+    <div class="col-12">
+        <p-accordion [activeIndex]="activeTypeIndex" (onOpen)="onAccordionOpen($event)">
+            <p-accordionTab [header]="reportType.name"  *ngFor="let reportType of reportTypes">
+                <div class="grid">
+                    <div class="col-10">
+                        <div class="grid" *ngIf="logedDetails && logedDetails.usercode && (logedDetails.usercode.startsWith('S')) && reportType.id == 1">
+                            <div class="col-12" [formGroup]="reportForm">
+                                <p-multiSelect [options]="dropdownCourses" formControlName="course" [style]="{width: '100%'}" optionLabel="code" appendTo="body" placeholder="Select Courses" (onPanelHide)="filterByCourse()">
+                                    <ng-template let-course pTemplate="item">
+                                        ({{ course.code }}) - {{course.teacher.fullName}}'s {{course.grade.name}} {{course.date}} {{course.subject.name}} Class at {{course.startTime}}
+                                    </ng-template>
+                                </p-multiSelect>
+                            </div>
+                        </div>
+
+                        <div class="grid" *ngIf="logedDetails && logedDetails.usercode && (logedDetails.usercode.startsWith('M') || logedDetails.usercode.startsWith('A')) && reportType.id == 5">
+                            <div class="col-12" [formGroup]="reportForm">
+                                <p-calendar view="year" placeholder="Select Year" formControlName="year" dateFormat="yy" [maxDate]="date" [style]="{width: '100%'}" (onSelect)="filterByYear()"></p-calendar>
+                            </div>
+                        </div>
+
+                        <div class="grid" *ngIf="logedDetails && logedDetails.usercode && (logedDetails.usercode.startsWith('F')) && reportType.id == 4">
+                            <div class="col-4" [formGroup]="reportForm">
+                                <p-multiSelect [options]="allCourses" formControlName="course" [style]="{width: '100%'}" optionLabel="code" appendTo="body" placeholder="Select Courses" (onPanelHide)="filterByCourse()">
+                                    <ng-template let-course pTemplate="item">
+                                        ({{ course.code }}) - {{course.teacher.fullName}}'s {{course.grade.name}} {{course.date}} {{course.subject.name}} Class at {{course.startTime}}
+                                    </ng-template>
+                                </p-multiSelect>
+                            </div>
+
+                            <div class="col-4" [formGroup]="reportForm">
+                                <p-calendar view="year" placeholder="Select Year" formControlName="yearIncome" dateFormat="yy" [maxDate]="date" [style]="{width: '100%'}" (onSelect)="filterByYearForIncomeReport()"></p-calendar>
+                            </div>
+
+                            <div class="col-4" [formGroup]="reportForm">
+                                <p-calendar  view="month" dateFormat="mm" [readonlyInput]="true" placeholder="Select Month" formControlName="month" [style]="{width: '100%'}" (onSelect)="filterByMonthrForIncomeReport()"></p-calendar>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <button pButton class="p-button-primary" (click)="generatePDF()">Get Report</button>
+                    </div>
+                </div>
+            </p-accordionTab>
+        </p-accordion>
+    </div>
+</div>
+
+
+    <app-student-quiz-report *ngIf="userRoleId == 1 && this.selectedReportType?.id == 1" 
+    [reciptTemplateDataVM]="selectedReportType" [isGetPDFClicked]="isGetPDFClicked" (isPdfCreated)="getIsGetPDFClicked($event)" [selectedCourses]="selectedCourses"></app-student-quiz-report>
+    <app-teacehr-quiz-report *ngIf="userRoleId == 4 && this.selectedReportType?.id == 1" 
+    [reciptTemplateDataVM]="selectedReportType" [isGetPDFClicked]="isGetPDFClicked" (isPdfCreated)="getIsGetPDFClicked($event)" [selectedCourses]="selectedCourses"></app-teacehr-quiz-report>
+    <app-manage-quiz-report *ngIf="(userRoleId == 3 || userRoleId ==5) && this.selectedReportType?.id == 1" 
+    [reciptTemplateDataVM]="selectedReportType" [isGetPDFClicked]="isGetPDFClicked" (isPdfCreated)="getIsGetPDFClicked($event)" [selectedCourses]="selectedCourses"></app-manage-quiz-report>
+    <app-income-report *ngIf="(userRoleId == 3 || userRoleId ==5) && this.selectedReportType?.id == 4" 
+    [reciptTemplateDataVM]="selectedReportType" [isGetPDFClicked]="isGetPDFClicked" (isPdfCreated)="getIsGetPDFClicked($event)" [selectedCourses]="selectedCourses"></app-income-report>
+    <app-expences-report *ngIf="(userRoleId == 3 || userRoleId ==5) && this.selectedReportType?.id == 5" 
+    [reciptTemplateDataVM]="selectedReportType" [isGetPDFClicked]="isGetPDFClicked" (isPdfCreated)="getIsGetPDFClicked($event)" [selectedCourses]="selectedCourses" [selectedYear]="selectedYear"></app-expences-report>
+    <app-attendance-report *ngIf="(userRoleId == 1) && this.selectedReportType?.id == 3" 
+    [reciptTemplateDataVM]="selectedReportType" [isGetPDFClicked]="isGetPDFClicked" (isPdfCreated)="getIsGetPDFClicked($event)" [selectedCourses]="selectedCourses" ></app-attendance-report>
+    <app-front-desk-income-report *ngIf="(userRoleId == 2) && this.selectedReportType?.id == 4" 
+    [reciptTemplateDataVM]="selectedReportType" [isGetPDFClicked]="isGetPDFClicked" (isPdfCreated)="getIsGetPDFClicked($event)" [selectedCourses]="selectedCourses" ></app-front-desk-income-report>
+
+

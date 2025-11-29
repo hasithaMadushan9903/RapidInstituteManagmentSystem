@@ -1,0 +1,367 @@
+<div *ngIf="isLoading" class="loading">
+    <img src="../../assets/giphy.gif" alt="" srcset="" class="lodingGif">
+</div>
+
+<div *ngIf="!isLoading">
+    <p-toast></p-toast>
+    <p-confirmDialog header="Change Quizz Status" icon="pi pi-exclamation-triangle" [style]="{width: '50vw'}"></p-confirmDialog>
+    <div class="grid pt-5 pl-3">
+        <div class="col-3" *ngIf="isActionAllowed(3)">
+            <div [formGroup]="selectAction">
+                <label for="searchAction">Filter A Quizz</label><br><br>
+                <p-radioButton value=1 inputId="searchAction" formControlName="action" (click)="loadTheContent()"></p-radioButton>
+            </div>
+        </div>
+        <div class="col-3" *ngIf="isActionAllowed(1)">
+            <div [formGroup]="selectAction">
+                <label for="createAction">Create A Quizz</label><br><br>
+                <p-radioButton value=2 inputId="createAction" formControlName="action" (click)="loadTheContent()"></p-radioButton>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="grid">
+                <div class="col-11 flex justify-content-end mr-4">
+                    <button label="Create A Quiz" class="ml-2" pButton *ngIf="action === 2" (click)="openQuizzForm(true)"></button>
+                </div>
+            </div>
+            <div class="grid pt-4" *ngIf="action == 1">
+                <div class="col-8 p-float-label" [formGroup]="searchForm">
+                    <p-dropdown  [options]="courses" optionLabel="code" appendTo="body" placeholder="Select Course" [style]="{'width':'100%'}" class="inputsStyle" formControlName="searchValue">
+                        <ng-template let-course pTemplate="item">
+                            ({{ course.code }}) - {{course.teacher.fullName}}'s {{course.grade.name}} {{course.date}} {{course.subject.name}} Class at {{course.startTime}}
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+                <div class="col-2">
+                    <button label="Search" pButton (click)="searchQuizz()"></button>
+                </div>
+                <div class="col-2">
+                    <button label="Reset" class="p-button-secondary" pButton (click)="resetSearch()"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid pt-5 pl-3">
+        <div class="col-4" *ngFor="let quizz of filterQuizzes; let i = index">
+            <p-card>
+                <ng-template pTemplate="header">
+                    <div class="grid">
+                        <div class="col-8 ml-3 font-bold">
+                            ({{quizz.course?.code}}) - {{quizz.title}}
+                        </div>
+                        <div class="col-1">
+                            <!-- <i class="fa-solid fa-pen-to-square" *ngIf="isActionAllowed(2)" (click)="updateQuizz(quizz,i)"></i> -->
+                            <button *ngIf="isActionAllowed(2)" icon="fa-solid fa-pen-to-square" pButton class="p-button-text" (click)="updateQuizz(quizz,i)" [disabled]="!(!quizz.isStarted && !quizz.isFinished)"></button>
+                        </div>
+                        <div class="col-1">
+                            <!-- <i class="fa-solid fa-trash" *ngIf="isActionAllowed(4)"></i> -->
+                            <button *ngIf="isActionAllowed(4)" icon="fa-solid fa-trash" pButton class="p-button-text" [disabled]="quizz.isStarted" (click)="openDeleteConfirmation(quizz,i)"></button>
+                        </div>
+                        <div class="col-1">
+                            <!-- <i class="fa-solid fa-stopwatch" *ngIf="isActionAllowed(2) && !quizz.isStarted" (click)="changeQuizzDue(quizz,i)" ></i> -->
+                            <button *ngIf="isActionAllowed(2) && !quizz.isStarted" icon="fa-solid fa-stopwatch" pButton class="p-button-text" (click)="changeQuizzDue(quizz,i)" [disabled]="quizz.isFinished || isTimesUp(quizz.dueDateTime)"></button>
+                            <button *ngIf="isActionAllowed(2) && quizz.isStarted" style="color: #f20707;" icon="fa-solid fa-stopwatch" pButton class="p-button-text" (click)="changeQuizzDue(quizz,i)" [disabled]="isTimesUp(quizz.dueDateTime)"></button>
+                            <!-- <i class="fa-solid fa-stopwatch" style="color: #f20707;" *ngIf="isActionAllowed(2) && quizz.isStarted" (click)="changeQuizzDue(quizz,i)"></i> -->
+                        </div>
+                    </div>
+                </ng-template>
+                <div class="grid">
+                    <div class="col-12">
+                        <p [ngClass]="{ 'text-red-500': isTimesUp(quizz.dueDateTime), 'text-yellow-400': !(isTimesUp(quizz.dueDateTime)) }" class="text-red-500">Due on {{quizz.dueDateTime | date : 'MMMM d, y, h:mm:ss a z'}}</p>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="col-4 text-blue-400" *ngIf="quizz.isStudentAttemp">
+                        Your Score is : {{getMarks(quizz.scoreDTO?.score,quizz.scoreDTO?.totalWeight)}}%
+                    </div>
+                    <div class="flex justify-content-end" [ngClass]="{ 'col-12': !quizz.isStudentAttemp, 'col-8': quizz.isStudentAttemp }">
+                        <button label="Attemp" *ngIf="!logedDetails?.usercode?.startsWith('T')" pButton class="p-button-primary" [disabled]="!quizz.isStarted || quizz.isFinished || isTimesUp(quizz.dueDateTime) || quizz.isStudentAttemp" (click)="openQuizPopup(quizz)"></button>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Quizz Creation Form" [(visible)]="isCreateQuizzFormPopupVisible" [style]="{width: '50vw'}" [modal]="true" (onHide)="closeQuizzUpdatePopup()">
+    <p-steps [model]="steps" [readonly]="true" [(activeIndex)]="activeStepIndex"></p-steps>
+
+    <form [formGroup]="quizzForm" class="mt-4">
+        <div class="grid" *ngIf="activeStepIndex == 0">
+            <div class="col-12">
+                <p-dropdown  [options]="courses" optionLabel="code" appendTo="body" placeholder="Select Course" [style]="{'width':'100%'}" class="inputsStyle" formControlName="course">
+                    <ng-template let-course pTemplate="item">
+                        ({{ course.code }}) - {{course.teacher.fullName}}'s {{course.grade.name}} {{course.date}} {{course.subject.name}} Class at {{course.startTime}}
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <div class="col-12 p-float-label mt-4">
+                <input type="text" pInputText class="inputsStyle" id="quizztitle" formControlName="title">
+                <label for="quizztitle">Enter Quizz Title</label>
+            </div>
+            <div class="col-12 p-float-label mt-4">
+                <input type="text" pInputText class="inputsStyle" id="quesionPerQuiz" formControlName="quesionPerQuiz">
+                <label for="quesionPerQuiz">Enter Quesion Per Quiz</label>
+            </div>
+            <div class="col-12">
+                Select Due Date & Time : {{(getQuizzDueDateTime.value | date : 'MMMM d, y, h:mm:ss a z')}}
+                <div class="grid">
+                    <div class="col-2"> </div><br>
+                    <div class="col-8">
+                        <p-calendar class="max-w-full mt-2" [minDate]="today" [inline]="true" [showTime]="true" [showSeconds]="true" [style]="{'width':'100%'}" formControlName="due"></p-calendar>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9"></div>
+            <div class="col-3 flex justify-content-end">
+                <button label="Next" pButton class="p-button-primary" [disabled]="!(getQuizzTitle.value && getQuizzCourse.value && getQuizzDueDateTime.value)" (click)="activeStepIndex = activeStepIndex +1"></button>
+            </div>
+        </div>
+
+        <div class="grid" *ngIf="activeStepIndex == 1">
+            <div class="col-12">
+                <div class="grid">
+                    <div class="col-12 p-float-label">
+                        <input type="text" pInputText class="inputsStyle" id="quession" formControlName="quession">
+                        <label for="quession">Enter the question</label>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText placeholder="First Answer" class="inputsStyle" formControlName="firstAns" id="firstAns">
+                            <span class="p-inputgroup-addon">
+                                <p-radioButton formControlName="correctAns" value=1></p-radioButton>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText placeholder="Second Answer" class="inputsStyle" formControlName="secondAns" id="secondAns">
+                            <span class="p-inputgroup-addon">
+                                <p-radioButton formControlName="correctAns" value=2></p-radioButton>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText placeholder="Third Answer" class="inputsStyle" formControlName="thirdAns" id="thirdAns">
+                            <span class="p-inputgroup-addon">
+                                <p-radioButton formControlName="correctAns" value=3></p-radioButton>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText placeholder="Forth Answer" class="inputsStyle" formControlName="forthAns" id="forthAns">
+                            <span class="p-inputgroup-addon">
+                                <p-radioButton formControlName="correctAns" value=4></p-radioButton>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12 p-float-label pt-2">
+                        <input type="text" pInputText class="inputsStyle" id="weight" formControlName="weight">
+                        <label for="quession">Quesion weight</label>
+                    </div>
+                    <div class="col-12">
+                        <button label="Add" pButton class="p-button-info w-full" [disabled]="!quizzForm.valid" (click)="addQuesion()"></button>
+                    </div>
+                    
+                </div>
+                <div class="grid" *ngIf="queestions.length>0">
+                    <div class="col-12" *ngFor="let quession of queestions; let i = index">
+                        <p-card>
+                            <div class="grid">
+                                <div class="col-2">
+                                    Question {{i+1}}
+                                </div>
+                                <div class="col-8"></div>
+                                <div class="col-1"><i class="fa-solid fa-pen-to-square" (click)="changeQuesion(quession,i)"></i></div>
+                                <div class="col-1"><i class="fa-solid fa-xmark" (click)="removeQuestion(i)"></i></div>
+
+                            </div>
+                            <div class="grid">
+                                <b><div class="col-12">{{quession?.description}}</div></b>
+                            </div>
+                            <div class="grid" *ngFor="let answ of quession?.answers; let ansi = index">
+                                <div class="col-12">
+                                    <!-- <p-radioButton value=1></p-radioButton> -->
+                                    {{ansi+1}}.{{answ.description}} &nbsp; &nbsp;<i class="fa-solid fa-check" style="color: #63E6BE;" *ngIf="answ.isCorrect"></i>
+                                </div>
+                            </div>
+                        </p-card>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <button label="Previous" pButton class="p-button-secondary" (click)="activeStepIndex = activeStepIndex -1"></button>
+            </div>
+            <div class="col-7"></div>
+            <div class="col-2">
+                <button label="Submit" pButton class="p-button-success" [disabled]="queestions.length<=0" (click)="saveQuizz()"></button>
+            </div>
+        </div>
+    </form>
+</p-dialog>
+
+<p-dialog header="Quizz Update Form" [(visible)]="isUpdateQuizzFormPopupVisible" [style]="{width: '50vw'}" [modal]="true" (onHide)="closeQuizzUpdatePopup()">
+    <p-steps [model]="steps" [readonly]="true" [(activeIndex)]="updateActiveStepIndex"></p-steps>
+
+    <form [formGroup]="quizzUpdateForm" class="mt-4">
+        <div class="grid" *ngIf="updateActiveStepIndex == 0">
+            <div class="col-12">
+                <p-dropdown  [options]="courses" optionLabel="code" appendTo="body" placeholder="Select Course" [style]="{'width':'100%'}" class="inputsStyle" formControlName="course">
+                    <ng-template let-course pTemplate="item">
+                        ({{ course.code }}) - {{course.teacher.fullName}}'s {{course.grade.name}} {{course.date}} {{course.subject.name}} Class at {{course.startTime}}
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <div class="col-12 p-float-label mt-4">
+                <input type="text" pInputText class="inputsStyle" id="quizztitle" formControlName="title">
+                <label for="quizztitle">Enter Quizz Title</label>
+            </div>
+            <div class="col-12 p-float-label mt-4">
+                <input type="text" pInputText class="inputsStyle" id="quesionPerQuiz" formControlName="quesionPerQuiz">
+                <label for="quesionPerQuiz">Enter Quesion Per Quiz</label>
+            </div>
+            <div class="col-12">
+                Select Due Date & Time : {{(getQuizzUpdateDueDateTime.value | date : 'MMMM d, y, h:mm:ss a z')}}
+                <div class="grid">
+                    <div class="col-2"> </div><br>
+                    <div class="col-8">
+                        <p-calendar class="max-w-full mt-2" [inline]="true" [showTime]="true" [showSeconds]="true" [style]="{'width':'100%'}" formControlName="due" [minDate]="today"></p-calendar>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9"></div>
+            <div class="col-3 flex justify-content-end">
+                <button label="Next" pButton class="p-button-primary" [disabled]="!(getQuizzUpdateTitle.value && getQuizzUpdateCourse.value && getQuizzUpdateDueDateTime.value)" (click)="updateActiveStepIndex = updateActiveStepIndex +1"></button>
+            </div>
+        </div>
+
+        <div class="grid" *ngIf="updateActiveStepIndex == 1">
+            <div class="col-12">
+                <div class="grid">
+                    <div class="col-12 p-float-label">
+                        <input type="text" pInputText class="inputsStyle" id="quession" formControlName="quession">
+                        <label for="quession">Enter the question</label>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText placeholder="First Answer" class="inputsStyle" formControlName="firstAns" id="firstAns">
+                            <span class="p-inputgroup-addon">
+                                <p-radioButton formControlName="correctAns" value=1></p-radioButton>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText placeholder="Second Answer" class="inputsStyle" formControlName="secondAns" id="secondAns">
+                            <span class="p-inputgroup-addon">
+                                <p-radioButton formControlName="correctAns" value=2></p-radioButton>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText placeholder="Third Answer" class="inputsStyle" formControlName="thirdAns" id="thirdAns">
+                            <span class="p-inputgroup-addon">
+                                <p-radioButton formControlName="correctAns" value=3></p-radioButton>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText placeholder="Forth Answer" class="inputsStyle" formControlName="forthAns" id="forthAns">
+                            <span class="p-inputgroup-addon">
+                                <p-radioButton formControlName="correctAns" value=4></p-radioButton>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button label="Add" pButton class="p-button-info w-full" [disabled]="!quizzUpdateForm.valid" (click)="addUpdateQuesion()"></button>
+                    </div>
+                    
+                </div>
+                <div class="grid" *ngIf="queestions.length>0">
+                    <div class="col-12" *ngFor="let quession of queestions; let i = index">
+                        <p-card>
+                            <div class="grid">
+                                <div class="col-2">
+                                    Question {{i+1}}
+                                </div>
+                                <div class="col-8"></div>
+                                <div class="col-1"><i class="fa-solid fa-pen-to-square" (click)="changeQuesionInUpdate(quession,i)"></i></div>
+                                <div class="col-1"><i class="fa-solid fa-xmark" (click)="removeQuestionInUpdate(i)"></i></div>
+
+                            </div>
+                            <div class="grid">
+                                <b><div class="col-12">{{quession?.description}}</div></b>
+                            </div>
+                            <div class="grid" *ngFor="let answ of quession?.answers; let ansi = index">
+                                <div class="col-12">
+                                    <!-- <p-radioButton value=1></p-radioButton> -->
+                                    {{ansi+1}}.{{answ.description}} &nbsp; &nbsp;<i class="fa-solid fa-check" style="color: #63E6BE;" *ngIf="answ.isCorrect"></i>
+                                </div>
+                            </div>
+                        </p-card>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <button label="Previous" pButton class="p-button-secondary" (click)="updateActiveStepIndex = updateActiveStepIndex -1"></button>
+            </div>
+            <div class="col-7"></div>
+            <div class="col-2">
+                <button label="Submit" pButton class="p-button-success" [disabled]="queestions.length<=0 || (getQuizzUpdateQuession.value && getQuizzUpdateFirstAns.value && getQuizzUpdateSecondAns.value && getQuizzUpdateThirdAns.value && getQuizzUpdateForthAns.value && getQuizzUpdateCorrectAns.value)" (click)="updatequiz()"></button>
+            </div>
+        </div>
+    </form>
+</p-dialog>
+
+<p-dialog header="Delete Confirmation" [(visible)]="isDeleteConfirmOpen" [style]="{width: '50vw'}" [modal]="true" (onHide)="closeDeleteConfirmation()">
+    <div class="grid">
+        <div class="col-12">
+            Are you sure that you want to delete?
+        </div>
+        <div class="col-10"></div>
+        <div class="col-1 flex justify-content-end">
+            <button label="Yes" pButton class="p-button-primary pl-3" (click)="deletequiz()"></button>
+        </div>
+        <div class="col-1 flex justify-content-end">
+            <button label="No" pButton class="p-button-primary" (click)="closeDeleteConfirmation()"></button>
+        </div>
+    </div>
+</p-dialog>
+
+<p-dialog header="{{attemptingQuiz?.title}}" [modal]="true" [(visible)]="isAttepmtPopupVisible" [style]="{ width: '100vw', height:'100vh' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" (onHide)="closeAttemp()">
+    <div class="grid mb-3">
+        <div class="col-12 flex justify-content-end text-red-500">
+            Important :- Going out from the quiz will clear all your work!
+        </div>
+    </div>
+    <div class="grid" *ngFor="let quession of attemptingQuestions; let i = index">
+        <p-card class="mb-3" [style]="{width: '90vw'}">
+            <div class="grid" [formGroup]="attemptingQuizForm">
+                <div class="col-12">
+                    {{i+1}}.{{quession.description}}
+                </div>
+                <div class="col-6" *ngFor="let  answer of quession.answers; let index = index">
+                    <div class="col-6">
+                        <div class="p-inputgroup">
+                            {{convertToRomeNumbers(index)}}. &nbsp;
+                            <p-radioButton value="{{answer.id}}" inputId="searchAction" [formControlName]="'quesion'+quession.id+'answer'" class="ml-3"></p-radioButton> &nbsp;
+                             {{answer.description}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p-card><br>
+    </div>
+
+    <div class="grid">
+        <div class="col-12 flex justify-content-end">
+            <button label="Submit" pButton class="p-button-success" [disabled]="!attemptingQuizForm.valid" (click)="submitAttempt()"></button>
+        </div>
+    </div>
+
+</p-dialog>

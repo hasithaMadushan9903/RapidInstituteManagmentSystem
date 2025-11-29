@@ -1,0 +1,60 @@
+<div class="receipt-container" [id]="i+'div'" *ngFor="let pdf of pdfData; let i = index">
+    <div class="receipt-header">
+      <h2>Quiz Report</h2>
+    </div>
+  
+    <div class="grid">
+      <div class="col-4">
+        Name : {{logedDetails?.fullName}}
+      </div>
+      <div class="col-4"></div>
+      <div class="col-4">
+        Date : {{date | date : 'MMMM d, y'}}
+      </div>
+    </div>
+  
+    <div class="grid mt-4">
+      <div class="col-12">
+        <p-table [value]="pdf.teacherData?pdf.teacherData:[]" class="p-mb-4">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Quiz Name</th>
+              <th>Course Code</th>
+              <th>Course Name</th>
+              <th>Average Marks</th>
+              <th>No of Attempts</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row>
+            <tr>
+              <td>{{ row.quizName }}</td>
+              <td>{{ row.courseCode }}</td>
+              <td>{{ row.courseName }}</td>
+              <td>{{ row.averageMarks}}</td>
+              <td>{{ row.noOfAttempts}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  
+    <!-- <div class="grid mt-4">
+      <div class="col-5">
+        Highest Mark : {{(getMarlAsPrecentage(highest?.marks,highest?.noOfQuestionInQuiz))}}% for {{highest?.quizName}} of {{highest?.courseCode}}
+      </div>
+      <div class="col-2"></div>
+      <div class="col-5">
+        Lowest Mark : {{(getMarlAsPrecentage(lowest?.marks,lowest?.noOfQuestionInQuiz))}}% for {{lowest?.quizName}} of {{lowest?.courseCode}}
+      </div>
+    </div> -->
+  
+    <div class="grid mt-4" *ngIf="i==pdfData.length-1">
+      <div class="col-12">
+        <p-chart type="bar" [data]="classFeeChartData" [options]="basicOptions" />
+      </div>
+      <div class="col-12 mt-4 flex justify-content-end">
+        ..................................<br>
+        Signature
+      </div>
+    </div>
+  </div>
