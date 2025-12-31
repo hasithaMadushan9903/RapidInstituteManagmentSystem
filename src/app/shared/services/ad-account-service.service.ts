@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ADAccountResponseVM } from '../models/adAccountResponseVM';
 import { ADAccountVM } from '../models/adAccountVM';
 import { loginDetailsResponseVM } from '../models/loginDetailsResponseVM';
+import { ImageUploadVM } from '../models/ImageUploadVM';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class AdAccountServiceService {
     return this.httpClient.post<ADAccountResponseVM>(`${this.BaseURL}/getalogin`,adAccount);
   }
 
-  updateProfilePicture(profilePictureName : string, userCode : string) : Observable<ADAccountResponseVM>{
-    return this.httpClient.get<ADAccountResponseVM>(`${this.BaseURL}/updateprofilepicture/${profilePictureName}/${userCode}`);
+  updateProfilePicture(imageUploadVM : ImageUploadVM) : Observable<ADAccountResponseVM>{
+    return this.httpClient.post<ADAccountResponseVM>(`${this.BaseURL}/updateprofilepicture`,imageUploadVM );
   }
 }

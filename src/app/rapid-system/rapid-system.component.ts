@@ -14,6 +14,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { FileUploadService } from '../shared/services/file-upload.service';
+import { ImageUploadVM } from '../shared/models/ImageUploadVM';
 
 @Component({
   selector: 'app-rapid-system',
@@ -229,7 +230,14 @@ export class RapidSystemComponent implements OnInit, OnDestroy {
   }
 
   uploadProfilePicture(){
-    this.adAccountService.updateProfilePicture(this.newlySvedProfilePictureName,this.usercode).subscribe(data =>{
+    let imageUploadVM : ImageUploadVM
+
+    imageUploadVM = {
+      url :this.newlySvedProfilePictureName,
+      userCode : this.usercode
+    }
+
+    this.adAccountService.updateProfilePicture(imageUploadVM).subscribe(data =>{
       if(data && data.content){
         if(this.logedDetails){
           this.logedDetails = {
