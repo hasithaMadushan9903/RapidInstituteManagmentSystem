@@ -1,6 +1,6 @@
 import { BaseResponse } from "./baseResponse";
-import { loginDetailsVM } from "./loginDetailsVM";
+import { loginResponse } from "./loginResponseVM";
 
 export interface loginDetailsResponseVM extends BaseResponse{
-    content : loginDetailsVM;
+    content : loginResponse;
 }

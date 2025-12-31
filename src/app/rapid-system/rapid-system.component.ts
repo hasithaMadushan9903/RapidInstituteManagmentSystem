@@ -106,14 +106,26 @@ export class RapidSystemComponent implements OnInit, OnDestroy {
     return enrolmentDate;
   }
 
-  getAppIcons(){
+  getAppIcons() {
     this.isLoading = true;
-    this.subs.sink = this.appIconService.getAppIcons().subscribe(data =>{
-      if(data && data.content){
-        this.appIcons = data.content;
+    
+    this.subs.sink = this.appIconService.getAppIcons().subscribe({
+      next: (data) => {
+        if (data && data.content) {
+          this.appIcons = data.content;
+        }
         this.isLoading = false;
+      },
+      error: (error) => {
+        this.isLoading = false;
+      
+        if (error.status === 403) {
+          this.logout()
+        } else {
+          console.log('API error occurred:', error);
+        }
       }
-    })
+    });
   }
 
   changePassword(){
@@ -270,6 +282,7 @@ export class RapidSystemComponent implements OnInit, OnDestroy {
 
   logout(){
     this.localStorageService.removeItem('login')
+    this.localStorageService.removeItem('token')
     this.isLogout.emit(true);
     this.router.navigate(['login']);
   }

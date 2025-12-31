@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -65,6 +65,7 @@ import { ExpencesReportComponent } from './report/expences-report/expences-repor
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { AttendanceReportComponent } from './report/attendance-report/attendance-report.component';
 import { FrontDeskIncomeReportComponent } from './report/front-desk-income-report/front-desk-income-report.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 // import { LoginPageComponent } from './login-page/login-page.component';
 
@@ -139,7 +140,7 @@ import { FrontDeskIncomeReportComponent } from './report/front-desk-income-repor
     PasswordModule,
     ChartModule,
   ],
-  providers: [ConfirmationService,MessageService],
+  providers: [ConfirmationService,MessageService,{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

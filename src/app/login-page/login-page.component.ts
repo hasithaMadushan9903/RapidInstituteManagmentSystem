@@ -59,10 +59,12 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     
 
     this.subs.sink = this.adAccountService.login(loginDetails).subscribe(data =>{
-      if(data && data.content && data.code == "00"){
-        this.logedDetails = data.content;
+      if(data && data.content && data.content.loginDetails && data.code == "00"){
+        
+        this.logedDetails = data.content.loginDetails;
         
         this.localStorageService.setItem('login',JSON.stringify(this.logedDetails));
+        this.localStorageService.setItem('token',data.content.token);
         this.isLogginSuccess.emit(this.logedDetails.isLoginSuccess);
       }else{
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'The entered credentials are incorrect or account has been terminated'});
