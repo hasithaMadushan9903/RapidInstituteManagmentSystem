@@ -8,13 +8,14 @@ import { studentWiseCoursesVM } from '../models/studentWiseCourseVM';
 import { studentWiseCoursessVM } from '../models/studentWiseCoursesVM';
 import { courseWiseMonthsResponseVM } from '../models/courseWiseMonthsResponseVM';
 import { courseWiseMonthResponse } from '../models/courseWiseMonthResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClassFeeService {
 
-  private BaseURL = "http://localhost:8080/api/v1/classfeectrl"
+  private BaseURL = `${environment.apiUrl}/classfeectrl`
 
   constructor(private httpClient: HttpClient) { }
 

@@ -4,13 +4,14 @@ import { roleVM } from '../models/roleVM';
 import { roleResponseVM } from '../models/roleResponseVM';
 import { Observable } from 'rxjs';
 import { rolesResponseVM } from '../models/rolesResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoleService {
 
-  private BaseURL = "http://localhost:8080/api/v1/rolectrl";
+  private BaseURL = `${environment.apiUrl}/rolectrl`;
 
   constructor(private httpClient: HttpClient) { }
   

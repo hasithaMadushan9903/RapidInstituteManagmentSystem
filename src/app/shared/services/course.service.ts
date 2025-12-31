@@ -5,13 +5,14 @@ import { CourseResponse } from '../models/courseResponse';
 import { CourseVM } from '../models/coursesVM';
 import { CourseResponses } from '../models/courseResponses';
 import { isExsistResponseVM } from '../models/isExsistResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseService {
 
-  private BaseURL = "http://localhost:8080/api/v1/coursectrl"
+  private BaseURL = `${environment.apiUrl}/coursectrl`
 
   constructor(private httpClient: HttpClient) { }
 

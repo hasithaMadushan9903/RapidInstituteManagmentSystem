@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { privilagesVM } from '../models/privilagesVM';
 import { privilageResponse } from '../models/privilageResponseVM';
 import { privilagesResponse } from '../models/privilagesResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PrivilageService {
 
-  private BaseURL = "http://localhost:8080/api/v1/privilagectrl";
+  private BaseURL = `${environment.apiUrl}/privilagectrl`;
 
   constructor(private httpClient: HttpClient) { }
 

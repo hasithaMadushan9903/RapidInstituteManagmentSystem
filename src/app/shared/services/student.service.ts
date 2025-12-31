@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { studentVM } from '../models/studentVM';
 import { studentResponseVM } from '../models/studentResponseVM';
 import { studentAllResponseVM } from '../models/studentAllResponse';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
 
-  private BaseURL = "http://localhost:8080/api/v1/studentctrl"
+  private BaseURL = `${environment.apiUrl}/studentctrl`
 
   constructor(private httpClient: HttpClient) { }
 

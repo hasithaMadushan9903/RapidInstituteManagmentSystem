@@ -9,6 +9,7 @@ import { attendanceSearchVM } from '../models/attendanceSearchVM';
 import { attendanceCountByMonthAndCourseResponseVM } from '../models/attendanceCountByMonthAndCourseResponseVM';
 import { courseWiseMonthsWithStudentVM } from '../models/courseWiseMonthsWithStudentVM';
 import { courseWiseMonthsWithStudentResponseVM } from '../models/courseWiseMonthWithStudentResponseVM';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -18,7 +19,7 @@ export class AttendanceService {
 
   constructor(private httpClient: HttpClient) { }
 
-  private BaseURL = "http://localhost:8080/api/v1/attendancectrl";
+  private BaseURL = `${environment.apiUrl}/attendancectrl`;
 
   markAttendance(attendances : attendanceVM[]) : Observable<attendancesResponseVM>{
     return this.httpClient.post<attendancesResponseVM>(`${this.BaseURL}/markattendance`,attendances);

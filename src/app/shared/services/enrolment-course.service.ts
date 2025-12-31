@@ -7,13 +7,14 @@ import { EnrolmentCourseVM } from '../models/enrolmentCourse';
 import { EnrolmentsCourseResponse } from '../models/enrolmentsCoursesResponse';
 import { courseWiseStudentCountsResponseVM } from '../models/courseWiseStudentCountsResponseVM';
 import { isExsistResponseVM } from '../models/isExsistResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EnrolmentCourseService {
 
-  private BaseURL = "http://localhost:8080/api/v1/enrolmentcoursectrl";
+  private BaseURL = `${environment.apiUrl}/enrolmentcoursectrl`;
 
   constructor(private httpClient: HttpClient) { }
 

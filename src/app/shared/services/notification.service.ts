@@ -4,6 +4,7 @@ import { notificationVM } from '../models/notificationVM';
 import { Observable } from 'rxjs';
 import { notificationResponseVM } from '../models/notificationResponseVM';
 import { notificationResponsesVM } from '../models/notificationResponsesVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class NotificationService {
 
   constructor(private httpClient: HttpClient) { }
 
-  private BaseURL = "http://localhost:8080/api/v1/notificationctrl"
+  private BaseURL = `${environment.apiUrl}/notificationctrl`
 
   addNotification(notification : notificationVM): Observable<notificationResponseVM>{
     return this.httpClient.post<notificationResponseVM>(`${this.BaseURL}/addnotification`,notification);

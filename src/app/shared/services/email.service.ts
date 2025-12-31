@@ -5,13 +5,14 @@ import { Observable } from 'rxjs';
 import { emailResponseVM } from '../models/emailResponseVM';
 import { teacherEmailVM } from '../models/teacherEmailVM';
 import { teacherEmailResponseVM } from '../models/teacherEmailResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmailService {
 
-  private BaseURL = "http://localhost:8080/api/v1/emailctrl"
+  private BaseURL = `${environment.apiUrl}/emailctrl`
 
   constructor(private httpClient: HttpClient) { }
 

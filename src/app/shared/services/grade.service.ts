@@ -5,13 +5,14 @@ import { Observable } from 'rxjs';
 import { gradeResponse } from '../models/gradeResponseVM';
 import { GradeVM } from '../models/gradeVM';
 import { DeleteAvailabilityResponseVM } from '../models/deleteAvailabilityResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GradeService {
 
-  private BaseURL = "http://localhost:8080/api/v1/gradectrl"
+  private BaseURL = `${environment.apiUrl}/gradectrl`
 
   constructor(private httpClient: HttpClient) { }
 

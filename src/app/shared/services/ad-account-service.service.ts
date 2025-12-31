@@ -5,6 +5,7 @@ import { ADAccountResponseVM } from '../models/adAccountResponseVM';
 import { ADAccountVM } from '../models/adAccountVM';
 import { loginDetailsResponseVM } from '../models/loginDetailsResponseVM';
 import { ImageUploadVM } from '../models/ImageUploadVM';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -13,7 +14,7 @@ import { ImageUploadVM } from '../models/ImageUploadVM';
 })
 export class AdAccountServiceService {
 
-  private BaseURL = "http://localhost:8080/api/v1/adaccountctrl"
+  private BaseURL = `${environment.apiUrl}/adaccountctrl`
 
   constructor(private httpClient: HttpClient) { }
 

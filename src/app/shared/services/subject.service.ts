@@ -5,13 +5,14 @@ import { SubjectsResponseVM } from '../models/subjectsResponseVM';
 import { SubjectVM } from '../models/subjectVM';
 import { SubjectResponseVM } from '../models/subjectResponseVM';
 import { DeleteAvailabilityResponseVM } from '../models/deleteAvailabilityResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubjectService {
 
-  private BaseURL = "http://localhost:8080/api/v1/subctrl";
+  private BaseURL = `${environment.apiUrl}/subctrl`;
 
   constructor(private httpClient: HttpClient) { }
 

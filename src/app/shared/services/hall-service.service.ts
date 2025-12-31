@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { hallResponse } from '../models/hallResponseVM';
 import { HallVM } from '../models/hallVM';
 import { HallsResponseVM } from '../models/hallsResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HallServiceService {
 
-  private BaseURL = "http://localhost:8080/api/v1/hallctrl";
+  private BaseURL = `${environment.apiUrl}/hallctrl`;
   
   constructor(private httpClient: HttpClient) { }
 

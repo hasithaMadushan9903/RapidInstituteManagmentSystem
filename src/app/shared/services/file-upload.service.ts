@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseResponse } from '../models/baseResponse';
 import { StringTypeResponseVM } from '../models/stringTypeResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileUploadService {
 
-  private BaseURL = "http://localhost:8080/api/v1/fileuploadctrl";
+  private BaseURL = `${environment.apiUrl}/fileuploadctrl`;
 
   constructor(private httpClient: HttpClient) { }
 

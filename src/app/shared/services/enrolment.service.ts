@@ -6,13 +6,14 @@ import { EnrolmentsResponse } from '../models/enrolmentsResponseVM';
 import { studentVM } from '../models/studentVM';
 import { EnrolmentsResponses } from '../models/EnrolmentsResponsesVM';
 import { isExsistResponseVM } from '../models/isExsistResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EnrolmentService {
 
-  private BaseURL = "http://localhost:8080/api/v1/enrolmentctrl";
+  private BaseURL = `${environment.apiUrl}/enrolmentctrl`;
 
   constructor(private httpClient: HttpClient) { }
 

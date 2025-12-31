@@ -5,13 +5,14 @@ import { leaveRequestResponseVM } from '../models/leaveRequestResponseVM';
 import { HttpClient } from '@angular/common/http';
 import { leaveRequestsResponseVM } from '../models/leaveRequestsResponseVM';
 import { approvingStatusVM } from '../models/approvingStatusVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeaveRequestService {
 
-  private BaseURL = "http://localhost:8080/api/v1/leaverequest";
+  private BaseURL = `${environment.apiUrl}/leaverequest`;
 
   constructor(private httpClient: HttpClient) { }
 

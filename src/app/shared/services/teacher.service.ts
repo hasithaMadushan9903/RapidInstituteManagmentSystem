@@ -5,13 +5,14 @@ import { TeachersResponse } from '../models/teachersResponse';
 import { teacherVM } from '../models/teachersVM';
 import { TeacherResponse } from '../models/teacherResposeVM';
 import { courseWisePaymentsResponseVM } from '../models/courseWisePaymentsResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeacherService {
 
-  private BaseURL = "http://localhost:8080/api/v1/teacherctrl";
+  private BaseURL = `${environment.apiUrl}/teacherctrl`;
 
   constructor(
     private httpClient: HttpClient

@@ -5,13 +5,14 @@ import { classFeeResponse } from '../models/classFeeResponse';
 import { Observable } from 'rxjs';
 import { teacherPaymentResponseVM } from '../models/teacherPaymentResponseVM';
 import { teacherPaymentsResponseVM } from '../models/teacherPaymentsResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeacherPaymentService {
 
-  private BaseURL = "http://localhost:8080/api/v1/teacherpaymentctrl"
+  private BaseURL = `${environment.apiUrl}/teacherpaymentctrl`
 
   constructor(private httpClient: HttpClient) { }
 

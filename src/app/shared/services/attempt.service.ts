@@ -9,6 +9,7 @@ import { TeacherQuizReportResponseVM } from '../models/teacehrQuizReportResponse
 import { IncomeReportResponseVM } from '../models/IncomeReportResponseVM';
 import { StudentAttendnceReportDataResponseVM } from '../models/StudentAttendnceReportDataResponseVM';
 import { IncomeReportDataForFrontdeskOfficerResponseVM } from '../models/IncomeReportDataForFrontdeskOfficerResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AttemptService {
 
   constructor(private httpClient: HttpClient) { }
 
-  private BaseURL = "http://localhost:8080/api/v1/attemptctrl";
+  private BaseURL = `${environment.apiUrl}/attemptctrl`;
 
   addAttept(attemptvm : Attemptvm) :Observable<ScoreResponseVM>{
     return this.httpClient.post<ScoreResponseVM>(`${this.BaseURL}/addquizattempt`,attemptvm);

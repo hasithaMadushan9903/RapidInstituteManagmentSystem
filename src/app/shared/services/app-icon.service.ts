@@ -4,6 +4,7 @@ import { appIconVM } from '../models/appIconVM';
 import { Observable } from 'rxjs';
 import { appiconResponse } from '../models/appIconResponseVM';
 import { appiconsResponse } from '../models/appIconsResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AppIconService {
 
   constructor(private httpClient: HttpClient) { }
 
-  private BaseURL = "http://localhost:8080/api/v1/appiconctrl";
+  private BaseURL = `${environment.apiUrl}/appiconctrl`;
 
   addAppIcon(appIcon : appIconVM) :Observable<appiconResponse>{
     return this.httpClient.post<appiconResponse>(`${this.BaseURL}/addappicon`,appIcon);

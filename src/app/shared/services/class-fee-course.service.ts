@@ -8,13 +8,14 @@ import { courseWiseClassFeeResponseVM } from '../models/courseWiseClassFeeRespon
 import { monthWiseIncomesResponseVM } from '../models/monthWiseIncomeResponseVM';
 import { monthCourseVM } from '../models/monthCourseVM';
 import { studentAllResponseVM } from '../models/studentAllResponse';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClassFeeCourseService {
 
-  private BaseURL = "http://localhost:8080/api/v1/classfeecoursectrl"
+  private BaseURL =  `${environment.apiUrl}/classfeecoursectrl`
   constructor(private httpClient: HttpClient) { }
 
   findLastByStudentAndCourse(studentWiseCourses : studentWiseCoursesVM[]): Observable<courseWiseClassFeeResponseVM>{

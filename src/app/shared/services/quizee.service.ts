@@ -4,12 +4,13 @@ import { quizzVM } from '../models/quizzVM';
 import { Observable } from 'rxjs';
 import { quizzResponseVM } from '../models/quizzResponseVM';
 import { quizzesResponseVM } from '../models/quizzesResponseVM';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizeeService {
-  private BaseURL = "http://localhost:8080/api/v1/quizzctrl";
+  private BaseURL = `${environment.apiUrl}/quizzctrl`;
 
   constructor(private httpClient: HttpClient) { }
 
