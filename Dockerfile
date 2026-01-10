@@ -8,5 +8,5 @@ RUN npm run build -- --configuration production
 
 # Stage 2: Serve with Nginx
 FROM nginx:alpine
-COPY --from=build /app/dist/RapidInstituteManagmentSystem /usr/share/nginx/html
+COPY --from=build /app/dist/rapid-institute-managment-system /usr/share/nginx/html
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
