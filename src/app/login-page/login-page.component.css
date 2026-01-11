@@ -49,8 +49,8 @@
 .left-side{
     background-image: linear-gradient(to right, rgb(17, 1, 63) , rgb(24, 1, 96));
     width: 37vw;
-    height: 73vh;
-    margin-top:5vh;
+    height: 83vh;
+    /* margin-top:2vh; */
     /* margin-left: 8vw; */
     border-radius: 100px;
     box-shadow: 5px 00px 5px 5px rgba(0, 0, 0, 0.29);
@@ -59,8 +59,8 @@
 .right-side{
     background-image: linear-gradient(to right, rgb(43, 0, 43) , rgb(72, 0, 72));
     width: 40vw;
-    height: 73vh;
-    margin-top: 5vh;
+    height: 83vh;
+    /* margin-top: 2vh; */
     /* margin-left: 20px; */
     border-radius: 100px;
     box-shadow: 5px 00px 5px 5px rgba(0, 0, 0, 0.29);
