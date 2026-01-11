@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <p-dialog header="Quick Student Registration Form" [(visible)]="isStudentFormVisible" [style]="{width: '50vw'}" [modal]="true" (onHide)="closeQuickStudentCreationPopup()">
+    <p-dialog header="Quick Student Registration Form" [(visible)]="isStudentFormVisible" [style]="{width: '60vw'}" [modal]="true" (onHide)="closeQuickStudentCreationPopup()">
         <p-steps [model]="steps" [readonly]="true" [(activeIndex)]="activeStepIndex"></p-steps>
         <br>
         <div class="grid">
@@ -58,9 +58,9 @@
                 <div class="col-4">
                     <label><span class="Requied ">* </span>Gender : </label> &nbsp;
                     <label for="male">Male</label>&nbsp;
-                    <p-radioButton value="male" inputId="male" formControlName="gender" (click)="loadTheContent()"></p-radioButton>&nbsp;
+                    <p-radioButton value="male" inputId="male" formControlName="gender"></p-radioButton>&nbsp;
                     <label for="female">Female</label>&nbsp;
-                    <p-radioButton value="female" inputId="female" formControlName="gender" (click)="loadTheContent()"></p-radioButton>
+                    <p-radioButton value="female" inputId="female" formControlName="gender"></p-radioButton>
                 </div>
             </div>
     

@@ -270,7 +270,7 @@ export class ManageStudentComponent implements OnInit, OnDestroy {
 
     this.parentDetailForm = this.formBuilder.group({
       fullName:['',[Validators.required,Validators.pattern(/^(?!.*\d)(\b\w+\b[\s]+){1,}\b\w+\b$/)]],
-      title:['',[Validators.required,Validators.pattern(/^[A-Za-z]{1,3}$/)]],
+      title:['',[Validators.required,Validators.pattern(/^[A-Za-z]{1,4}$/)]],
       NIC:[{value : '',disabled:true},[Validators.required, Validators.pattern(/^([1][9][0-9]{10})|([2][0][0-9]{10})|([0-9]{9}[V])$/)]],
       birthday:['',Validators.required],
       relationship:['',[Validators.required]],
@@ -281,7 +281,7 @@ export class ManageStudentComponent implements OnInit, OnDestroy {
 
     this.parentUpdateForm = this.formBuilder.group({
       fullName:['',[Validators.required,,Validators.pattern(/^(?!.*\d)(\b\w+\b[\s]+){1,}\b\w+\b$/)]],
-      title:['',[Validators.required,,Validators.pattern(/^[A-Za-z]{1,3}$/)]],
+      title:['',[Validators.required,,Validators.pattern(/^[A-Za-z]{1,4}$/)]],
       NIC:['',[Validators.required, Validators.pattern(/^([1][9][0-9]{10})|([2][0][0-9]{10})|([0-9]{9}[V])$/)]],
       birthday:['',Validators.required],
       relationship:['',[Validators.required]],

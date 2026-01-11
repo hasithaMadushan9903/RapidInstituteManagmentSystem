@@ -50,7 +50,7 @@
     background-image: linear-gradient(to right, rgb(17, 1, 63) , rgb(24, 1, 96));
     width: 37vw;
     height: 73vh;
-    margin-top: 20vh;
+    margin-top:5vh;
     /* margin-left: 8vw; */
     border-radius: 100px;
     box-shadow: 5px 00px 5px 5px rgba(0, 0, 0, 0.29);
@@ -60,7 +60,7 @@
     background-image: linear-gradient(to right, rgb(43, 0, 43) , rgb(72, 0, 72));
     width: 40vw;
     height: 73vh;
-    margin-top: 20vh;
+    margin-top: 5vh;
     /* margin-left: 20px; */
     border-radius: 100px;
     box-shadow: 5px 00px 5px 5px rgba(0, 0, 0, 0.29);
@@ -81,8 +81,36 @@
 }
 
 label{
-    color: aliceblue;
+    color: rgb(105, 105, 105);
 }
 
+.parprphalign{
+    text-align:justify;
+}
+
+.popups{
+    width: 10%;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    cursor: pointer;
+    padding: 10px
+}
+.btn-primary:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+.btn-primary:focus, .btn-primary.focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+.btn-primary.disabled, .btn-primary:disabled {
+    color: #fff;
+    background-color: #007bff63;
+    border-color: #007bff63;
+}
 
 
