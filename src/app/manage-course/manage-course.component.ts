@@ -229,6 +229,8 @@ export class ManageCourseComponent implements OnInit, OnDestroy {
         this.startTimeSlots = this.allTimeSlots;
         this.endTimeSlots = this.allTimeSlots;
         this.isLoading = false;
+      }else{
+        this.isLoading = false;
       }
     })
   }
