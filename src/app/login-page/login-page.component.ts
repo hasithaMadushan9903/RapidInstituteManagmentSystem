@@ -75,7 +75,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   role : roleVM|undefined
   student : studentVM | undefined;
   addmisionFee : number = 1500;
-  isloaded : boolean =false;
   relationships : any[] = [{name:'Mother'},{name:'Father'},{name:'Sister'},{name:'Brother'},{name:'Grand Mother'},{name:'Grand Father'},{name:'Aunty'},{name:'Uncle'},{name:'Gardian'}]; 
   dates : any[] = [{date:"Monday"},{date:"Tuesday"},{date:"Wednesday"},{date:"Thursday"},{date:"Friday"},{date:"Saturday"},{date:"Sunday"}]
 
@@ -294,9 +293,10 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
 
   getCourses(){
+    this.isloading = true
     this.subs.sink = this.courseServices.getCourses().subscribe(data =>{
       if(data){
-        this.isloaded = true;
+        this.isloading = false;
         this.courses = data.content;
         this.getGrade();
       }
@@ -304,19 +304,22 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
 
   getGrade(){
-    this.isloaded = false;
+    this.isloading = true;
     this.subs.sink = this.gradeServise.getGrades().subscribe(data => {
       if(data){
         this.grades = data.content
         this.getMonths();
       } 
+      this.isloading = false;
     })
     
   }
 
   getMonths(){
+    this.isloading = true
     this.subs.sink = this.monthService.getMonths().subscribe(data =>{
       if(data){
+        this.isloading = false
         this.months = data.content;
         this.getEnrolmentCourses()
       }
@@ -324,19 +327,22 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
 
   getEnrolmentCourses(){
+    this.isloading = true
     this.subs.sink = this.enrolmentCoursesService.getEnrolmentCourse().subscribe(data =>{
       if(data && data.content){
         this.allEnrolmentCourses = data.content;
         this.getRole();
       }
+      this.isloading = false
     })
   }
 
   getRole(){
+    this.isloading = true
     this.subs.sink = this.roleService.getRoles().subscribe(data =>{
       if(data && data.content){
         this.role = data.content.find(el => el.id && el.id == 1);
-        this.isloaded = true;
+        this.isloading = false;
       }
     })
   }
