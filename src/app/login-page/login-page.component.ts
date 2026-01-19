@@ -71,6 +71,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   proceedClassFeePayment : ClassFeeVM | undefined;
   reciptTemplateData : reciptTemplateDataVM | undefined;
   isASearchedParent : boolean = false;
+  istacLoaded : boolean = false
+  isprivacyLoaded : boolean = false
+  isRefundLoaded : boolean = false
   allEnrolmentCourses : EnrolmentCourseVM[]=[];
   role : roleVM|undefined
   student : studentVM | undefined;
@@ -393,6 +396,22 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       }
     });
     this.getTheTime?.enable();
+  }
+
+  loadTerms(typeEnum : number){
+    if(typeEnum == 1){
+      this.istacLoaded = true
+    }else if (typeEnum = 2){
+      this.isprivacyLoaded = true
+    }else if(typeEnum == 3){
+      this.isRefundLoaded = true
+    }
+  }
+
+  closeTerms(){
+    this.istacLoaded = false
+    this.isprivacyLoaded = false
+    this.isRefundLoaded = false
   }
 
   searchParent(){

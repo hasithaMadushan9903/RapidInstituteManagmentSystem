@@ -66,6 +66,9 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { AttendanceReportComponent } from './report/attendance-report/attendance-report.component';
 import { FrontDeskIncomeReportComponent } from './report/front-desk-income-report/front-desk-income-report.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { RefundPolicyComponent } from './refund-policy/refund-policy.component';
 
 // import { LoginPageComponent } from './login-page/login-page.component';
 
@@ -108,6 +111,9 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ExpencesReportComponent,
     AttendanceReportComponent,
     FrontDeskIncomeReportComponent,
+    TermsAndConditionsComponent,
+    PrivacyPolicyComponent,
+    RefundPolicyComponent,
     // LoginPageComponent,
   ],
   imports: [

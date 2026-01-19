@@ -1,7 +1,7 @@
 .banner-img{
     background-image: url(../../assets/loginBackgroundImage.png);
     background-repeat: repeat;
-    height: 100vh;
+    height: 105vh;
     /* filter: blur(2px); */
     /* opacity: 0.5; */
     background-color: rgba(0, 0, 0, 0.307);
@@ -111,6 +111,17 @@ label{
     color: #fff;
     background-color: #007bff63;
     border-color: #007bff63;
+}
+
+.transparent-btn {
+  background-color: transparent; /* makes it transparent */
+  border: 1px solid transparent; /* or remove border */
+  color: #02244a;                /* text color */
+  text-decoration: underline;
+  font-size: x-large;
+  padding: 8px 16px;
+  cursor: pointer;
+  /* font-size: 14px; */
 }
 
 
