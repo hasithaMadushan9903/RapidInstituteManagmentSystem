@@ -452,10 +452,6 @@
 
 </p-dialog>
 
-<div *ngIf="!isloading" class="loading">
-    <img src="../../assets/giphy.gif" alt="" srcset="" class="lodingGif">
-</div>
-
 <p-dialog header="Terms & Conditionse" [(visible)]="istacLoaded" [style]="{width: '60vw'}" [modal]="true" (onHide)="closeTerms()">
     <app-terms-and-conditions></app-terms-and-conditions>
 </p-dialog>
