@@ -114,14 +114,13 @@ label{
 }
 
 .transparent-btn {
-  background-color: transparent; /* makes it transparent */
-  border: 1px solid transparent; /* or remove border */
-  color: #02244a;                /* text color */
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: #02244a;
   text-decoration: underline;
   font-size: x-large;
   padding: 8px 16px;
   cursor: pointer;
-  /* font-size: 14px; */
 }
 
 
