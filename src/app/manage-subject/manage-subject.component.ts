@@ -230,9 +230,13 @@ export class ManageSubjectComponent implements OnInit, OnDestroy {
           if(data){
             this.subjectsAllData = data.content;
             this.subjectTableData = this.subjectsAllData
-            this.subjectTableData.reverse();
+            if(this.subjectTableData && this.subjectTableData.length && this.subjectTableData.length > 0){
+              this.subjectTableData.reverse();
+            }
+            this.isloading = false;
+          }else{
+            this.isloading = false;
           }
-          this.isloading = false;
         })
       }else{
         alert('Not Allowed');
