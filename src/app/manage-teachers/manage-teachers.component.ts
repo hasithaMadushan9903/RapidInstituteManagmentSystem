@@ -155,10 +155,12 @@ export class ManageTeachersComponent implements OnInit, OnDestroy {
       if(isprivilageHave){
         this.isloading = true;
         this.subs.sink = this.teachersService.getTeachers().subscribe(data => {
-          if(data){
+          if(data && data.content){
             this.teachersAllData = data.content;
             this.teachersTabelData = this.teachersAllData;
             this.teachersTabelData.reverse();
+            this.getRole();
+          }else{
             this.getRole();
           }
         })
@@ -179,6 +181,8 @@ export class ManageTeachersComponent implements OnInit, OnDestroy {
       if(data && data.content){
         this.role = data.content.find(el => el.id && el.id == 4);
         this.getApprovingStatuses();
+      }else{
+        this.getApprovingStatuses();
       }
     })
   }
@@ -187,6 +191,8 @@ export class ManageTeachersComponent implements OnInit, OnDestroy {
     this.subs.sink = this.approvingStatusService.getApprovingStatuses().subscribe(data =>{
       if(data && data.content){
         this.approvingStatuses = data.content
+        this.getLeaveRequests()
+      }else{
         this.getLeaveRequests()
       }
     })

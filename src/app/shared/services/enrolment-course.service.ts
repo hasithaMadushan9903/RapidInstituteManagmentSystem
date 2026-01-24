@@ -14,12 +14,12 @@ import { environment } from 'src/environments/environment';
 })
 export class EnrolmentCourseService {
 
-  private BaseURL = `${environment.apiUrl}/enrolmentcoursectrl`;
+  private BaseURL = `${environment.apiUrl}/enrolcoursectrl`;
 
   constructor(private httpClient: HttpClient) { }
 
   getEnrolmentCourse(): Observable<EnrolmentsCoursesResponse> {
-    return this.httpClient.get<EnrolmentsCoursesResponse>(`${this.BaseURL}/getenrolmentcourse`);
+    return this.httpClient.get<EnrolmentsCoursesResponse>(`${this.BaseURL}/getenrolcourse`);
   }
 
   deleteCourse(enrolmentCourse :EnrolmentCourseVM) : Observable<EnrolmentsCourseResponse> {
