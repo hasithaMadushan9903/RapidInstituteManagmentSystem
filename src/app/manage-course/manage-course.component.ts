@@ -204,17 +204,21 @@ export class ManageCourseComponent implements OnInit, OnDestroy {
         if(data){
           this.coursesAllData = data.content;
           this.coursesTableData = this.coursesAllData
-          this.coursesTableData.reverse()
+          if(this.coursesTableData && this.coursesTableData.length && this.coursesTableData.length > 0){
+            this.coursesTableData.reverse()
+          }
           this.getTimeSlots();
         }
-          this.isLoading = false;
+        this.isLoading = false;
       })
     }else{
       this.subs.sink = this.courseService.getCourses().subscribe(data =>{
         if(data){
           this.coursesAllData = data.content;
           this.coursesTableData = this.coursesAllData
-          this.coursesTableData.reverse()
+          if(this.coursesTableData && this.coursesTableData.length && this.coursesTableData.length > 0){
+            this.coursesTableData.reverse()
+          }
           this.getTimeSlots();
         }
         this.isLoading = false;
@@ -229,7 +233,7 @@ export class ManageCourseComponent implements OnInit, OnDestroy {
         this.startTimeSlots = this.allTimeSlots;
         this.endTimeSlots = this.allTimeSlots;
       }
-        this.isLoading = false;
+      this.isLoading = false;
     })
   }
 

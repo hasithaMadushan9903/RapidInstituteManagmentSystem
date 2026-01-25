@@ -150,6 +150,8 @@ export class DashboardComponent implements OnInit, OnDestroy  {
         this.students = data.content
         this.studentCount = this.students.length;
         this.getcourses();
+      }else{
+        this.getcourses();
       }
     })
   }
@@ -278,6 +280,8 @@ export class DashboardComponent implements OnInit, OnDestroy  {
         this.setStudentCountByCourseChartData();
         this.getAttendanceCountByMonthAndCourse()
         this.isLoading = false;
+      }else{
+        this.getAttendanceCountByMonthAndCourse()
       }
     })
   }
@@ -314,6 +318,8 @@ export class DashboardComponent implements OnInit, OnDestroy  {
           }
         });
         this.setAttendanceCountByMonthAndCourseChartData();
+        this.getAllCoursesOnToday();
+      }else{
         this.getAllCoursesOnToday();
       }
     })
@@ -880,6 +886,11 @@ export class DashboardComponent implements OnInit, OnDestroy  {
           indexs.forEach(i => {
             this.studentTodayCourse.splice(i,1);
           });
+
+          
+          this.isLoading = false;
+        }else{
+          this.isLoading = false;
         }
       })
     }
