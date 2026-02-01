@@ -255,6 +255,10 @@ export class ManageEnrolmentComponent implements OnInit, OnDestroy {
 
   openEnrolDialog(course : CourseVM){
     this.enrolingCourse = course;
+    if(this.userCode.charAt(0) == 'S'){
+      this.getScode.patchValue(this.userCode);
+      this.getScode.disable();
+    }
     this.isEnrolDialogVisible = true;
   }
 
@@ -283,6 +287,14 @@ export class ManageEnrolmentComponent implements OnInit, OnDestroy {
   
   next(){
     this.activeStepIndex = 1;
+    let studentCourse : StudentCourseVM[] = [];
+    if(this.enrolingCourse){
+      studentCourse = this.filterByCourse(this.enrolingCourse);
+      if(studentCourse.filter(el => el.student?.id === this.searchedStudent?.id).length > 0){
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Student Already Enrolled'});
+        this.activeStepIndex = 0;
+      }
+    }
   }
   
   enrollCourses(){

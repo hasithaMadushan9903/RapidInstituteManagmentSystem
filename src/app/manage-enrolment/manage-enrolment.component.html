@@ -55,8 +55,8 @@
                         </ng-template>
                         <ng-template  pTemplate="body" let-studentCourse>
                             <tr>
-                                <td class="centerText">{{studentCourse.student.scode}}</td>
-                                <td class="centerText">{{studentCourse.student.callingName}}</td>
+                                <td class="centerText">{{studentCourse?.student?.scode}}</td>
+                                <td class="centerText">{{studentCourse?.student?.callingName}}</td>
                                 <td class="centerText">{{getEnrolledDate(studentCourse.enrolledDate)}}</td>
                                 <td class="centerText"><i class="fa-solid fa-trash delete-color" (click)="deleteCourse(studentCourse , course)" *ngIf="isActionAllowed(4)"></i></td>
                             </tr>
@@ -94,9 +94,9 @@
                         </ng-template>
                         <ng-template  pTemplate="body" let-studentCourse>
                             <tr>
-                                <td class="centerText">{{studentCourse.student.scode}}</td>
-                                <td class="centerText">{{studentCourse.student.callingName}}</td>
-                                <td class="centerText">{{getEnrolledDate(studentCourse.enrolledDate)}}</td>
+                                <td class="centerText">{{studentCourse?.student?.scode}}</td>
+                                <td class="centerText">{{studentCourse?.student?.callingName}}</td>
+                                <td class="centerText">{{getEnrolledDate(studentCourse?.enrolledDate)}}</td>
                                 <td class="centerText"><i class="fa-solid fa-trash delete-color" (click)="deleteCourse(studentCourse , course)" *ngIf="isActionAllowed(4)"></i></td>
                             </tr>
                         </ng-template>
@@ -117,7 +117,7 @@
                         <label for="occupation">Enter Student Code</label>
                     </div>
                     <div class="col-4">
-                        <button label="Enroll" pButton class="p-button-primary" [disabled]="!enrolmentForm.valid" (click)="searchStudent()"></button>
+                        <button label="Enroll" pButton class="p-button-primary" [disabled]="!getScode.value" (click)="searchStudent()"></button>
                     </div>
                 </div>
     
