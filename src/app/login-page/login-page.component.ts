@@ -30,6 +30,9 @@ import { MonthService } from '../shared/services/month.service';
 import { RoleService } from '../shared/services/role.service';
 import { teacherVM } from '../shared/models/teachersVM';
 import { CourseService } from '../shared/services/course.service';
+import { PayhereService } from '../shared/services/payhere.service';
+import { log } from 'console';
+import { payHereInitResponseVM } from '../shared/models/payHereInitResponseVM';
 
 @Component({
   selector: 'app-login-page',
@@ -43,6 +46,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   months : MonthVM[] = [];
   maxDate !: Date;
   isloading : boolean = false;
+  isLoginig : boolean = false;
   studentDetailForm !: FormGroup;
   parentDetailForm !: FormGroup;
   classFeeForm !: FormGroup;
@@ -153,6 +157,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     private enrolmentCoursesService : EnrolmentCourseService,
     private monthService : MonthService,
     private roleService : RoleService,
+    private payhereService : PayhereService
   ){
     this.maxDate = new Date();
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 5);
@@ -264,6 +269,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
 
   login(){
+    this.isLoginig = true;
     let loginDetails : ADAccountVM;
 
     loginDetails = {
@@ -274,13 +280,14 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
     this.subs.sink = this.adAccountService.login(loginDetails).subscribe(data =>{
       if(data && data.content && data.content.loginDetails && data.code == "00"){
-        
+        this.isLoginig = false;
         this.logedDetails = data.content.loginDetails;
         
         this.localStorageService.setItem('login',JSON.stringify(this.logedDetails));
         this.localStorageService.setItem('token',data.content.token);
         this.isLogginSuccess.emit(this.logedDetails.isLoginSuccess);
       }else{
+        this.isLoginig = false;
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'The entered credentials are incorrect or account has been terminated'});
       }
     })
@@ -348,6 +355,13 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         this.isloading = false;
       }
     })
+  }
+
+  getNextReceiptNumber(currentReceipt: string): string {
+    const numberPart = currentReceipt.slice(1); 
+    const nextNumber = parseInt(numberPart, 10) + 1;
+    const nextNumberPadded = nextNumber.toString().padStart(5, '0'); 
+    return 'R' + nextNumberPadded; // "R00142"
   }
 
   removeCourse(course : any){
@@ -710,6 +724,87 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       isActive : true
     }
 
+    this.loadPayHere(classFee);
+
+  }
+
+  loadPayHere(classFee : ClassFeeVM){
+    this.classFeeService.getLastreciptnumber().subscribe(data =>{
+      if(data && data.content){
+        let nextReciptNumber = this.getNextReceiptNumber(data.content);
+        this.loadPayHereGateway(nextReciptNumber,classFee)
+      }
+    })
+  }
+
+  loadPayHereGateway(reciptNumber : string, classFee : ClassFeeVM){
+    let total : number
+    total = this.classfeeWithAddmision();
+    this.payhereService.payhereimplementationtest(reciptNumber,total,"LKR").subscribe(data =>{
+      if(data && data.content){
+        this.redirectToPayHere(data.content,classFee)
+      }
+    })
+  }
+
+  redirectToPayHere(data: payHereInitResponseVM,classFee : ClassFeeVM) {
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'https://sandbox.payhere.lk/pay/checkout';
+
+    const fields: any = {
+      merchant_id: data.merchantId,
+      return_url: 'http://www.edugrowa.com/payment-success',
+      cancel_url: 'http://www.edugrowa.com/payment-cancel',
+      notify_url: 'http://rapidmanagmentsystembe-production.up.railway.app/api/payhere/notify',
+
+      order_id: data.orderId,
+      items: 'Test Payment',
+      amount: data.amount,
+      currency: data.currency,
+
+      first_name: 'Test',
+      last_name: 'User',
+      email: 'test@email.com',
+      phone: '0771234567',
+      address: 'Colombo',
+      city: 'Colombo',
+      country: 'Sri Lanka',
+
+      hash: data.hash
+    };
+
+    for (const key in fields) {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = fields[key];
+      form.appendChild(input);
+    }
+
+    form.target = '_blank'; // 👈 NEW TAB
+    document.body.appendChild(form);
+    form.submit();
+
+    this.veryfyPayment(data,classFee);
+  }
+
+  veryfyPayment(order : payHereInitResponseVM,classFee : ClassFeeVM){
+    let orderId : string = order.orderId ? order.orderId : '';
+    const intervalId = setInterval(() => {
+      this.payhereService.veryfyPayment(orderId).subscribe(data =>{
+        if(data && data.content){
+          if(data.content.status && data.content.status == '2'){
+            clearInterval(intervalId);
+            this.makePayement(classFee);
+          }
+        }
+      })
+    },3000)
+  }
+
+  makePayement(classFee : ClassFeeVM){
     this.subs.sink = this.classFeeService.addStudentClassFees(classFee).subscribe(data =>{
       if(data && data.content && data.content.classFeeCourse){
         this.proceedClassFeePayment = data.content;

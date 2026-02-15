@@ -22,9 +22,12 @@ import { ManageNotificationComponent } from './manage-notification/manage-notifi
 import { ManageLeaveComponent } from './manage-leave/manage-leave.component';
 import { QuizzComponent } from './quizz/quizz.component';
 import { ReportComponent } from './report/report.component';
+import { PaymentSuccessComponent } from './payment-success/payment-success.component';
 
 const routes: Routes = [
   {path : "login", component: LoginPageComponent},
+  {path : "payment-success", component: PaymentSuccessComponent},
+  {path : "payment-cancel", component: PaymentSuccessComponent},
   {path : "Dashboard", component: DashboardComponent, canActivate : [AuthGuard]},
   {path : "Manage Student", component: ManageStudentComponent ,canActivate : [AuthGuard]},
   {path : "Manage Course", component: ManageCourseComponent ,canActivate : [AuthGuard]},

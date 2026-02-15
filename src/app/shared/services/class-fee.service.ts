@@ -9,6 +9,7 @@ import { studentWiseCoursessVM } from '../models/studentWiseCoursesVM';
 import { courseWiseMonthsResponseVM } from '../models/courseWiseMonthsResponseVM';
 import { courseWiseMonthResponse } from '../models/courseWiseMonthResponseVM';
 import { environment } from 'src/environments/environment';
+import { lastReciptNumberResponse } from '../models/lastReciptNumberResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,10 @@ export class ClassFeeService {
 
   addStudentClassFees(classFee : ClassFeeVM) : Observable<classFeeResponse> {
     return this.httpClient.post<classFeeResponse>(`${this.BaseURL}/addclassfee`,classFee);
+  }
+
+  getLastreciptnumber(): Observable<lastReciptNumberResponse>{
+    return this.httpClient.get<lastReciptNumberResponse>(`${this.BaseURL}/getLastreciptnumber`)
   }
 
   getStudentClassFees(): Observable<classFeesResponse>{

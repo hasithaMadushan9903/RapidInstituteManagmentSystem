@@ -349,7 +349,7 @@
                 </div>
             </div><br>
 
-            <div class="grid mt-6">
+            <!-- <div class="grid mt-6">
                 <div class="col-4"></div>
                 <div class="col-4">
                     <div class="grid" [formGroup]="payingMethodForm">
@@ -364,45 +364,13 @@
                     </div>
                 </div>
                 <div class="col-4"></div>
-            </div>
+            </div> -->
 
-            <div class="grid mt-6" *ngIf="getPayingMethod.value == 1" [formGroup]="cardDetailsForm">
-                <div class="col-12">
-                    <div class="grid">
-                        <div class="col-12">
-                            <h3>Card Payement</h3>
-                        </div>
-                    </div>
-                    <div class="grid mt-3">
-                        <div class="col-3">
-                            <input type="text" appNumeric formControlName="firstFourDigit" pInputText class="inputsStyle" id="title" placeholder="XXXX" maxlength="4">
-                        </div>
-                        <div class="col-3">
-                            <input type="text" appNumeric formControlName="secondFourDigit" pInputText class="inputsStyle" id="title"   placeholder="XXXX" maxlength="4">
-                        </div>
-                        <div class="col-3">
-                            <input type="text" appNumeric formControlName="thirdhFourDigit" pInputText class="inputsStyle" id="title"   placeholder="XXXX" maxlength="4">
-                        </div>
-                        <div class="col-3">
-                            <input type="text" appNumeric formControlName="fourthFourDigit" pInputText class="inputsStyle" id="title"   placeholder="XXXX" maxlength="4">
-                        </div>
-                    </div>
-                    <div class="grid mt-3">
-                        <div class="col-4">
-                            <p-calendar view="month" formControlName="expirDate" dateFormat="mm/yy" [readonlyInput]="true" placeholder="mm/yy"/>
-                        </div>
-                        <div class="col-5"></div>
-                        <div class="col-3">
-                            <input type="text" formControlName="CVC" pInputText class="inputsStyle" id="title"   placeholder="CV Code" maxlength="3">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid mt-6"  *ngIf="getPayingMethod.value == 1">
+            <div class="grid mt-6">
                 <div class="col-9"></div>
                 <div class="col-3">
-                    <button pButton class="p-button-success" (click)="proceddPayment()"  [disabled]="!(cardDetailsForm.valid)">Save and Next</button>
+                    <button pButton class="p-button-success" (click)="proceddPayment()"  >Proceed Payment</button>
+                    <!-- [disabled]="!(cardDetailsForm.valid)" -->
                 </div>
             </div>
 

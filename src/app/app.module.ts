@@ -69,6 +69,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { RefundPolicyComponent } from './refund-policy/refund-policy.component';
+import { ManageClassRecordingsComponent } from './manage-class-recordings/manage-class-recordings.component';
+import { PaymentSuccessComponent } from './payment-success/payment-success.component';
 
 // import { LoginPageComponent } from './login-page/login-page.component';
 
@@ -114,6 +116,8 @@ import { RefundPolicyComponent } from './refund-policy/refund-policy.component';
     TermsAndConditionsComponent,
     PrivacyPolicyComponent,
     RefundPolicyComponent,
+    ManageClassRecordingsComponent,
+    PaymentSuccessComponent,
     // LoginPageComponent,
   ],
   imports: [
