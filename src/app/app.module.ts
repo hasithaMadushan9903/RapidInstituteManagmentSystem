@@ -71,6 +71,7 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
 import { RefundPolicyComponent } from './refund-policy/refund-policy.component';
 import { ManageClassRecordingsComponent } from './manage-class-recordings/manage-class-recordings.component';
 import { PaymentSuccessComponent } from './payment-success/payment-success.component';
+import { LoadingPageComponent } from './loading-page/loading-page.component';
 
 // import { LoginPageComponent } from './login-page/login-page.component';
 
@@ -118,6 +119,7 @@ import { PaymentSuccessComponent } from './payment-success/payment-success.compo
     RefundPolicyComponent,
     ManageClassRecordingsComponent,
     PaymentSuccessComponent,
+    LoadingPageComponent,
     // LoginPageComponent,
   ],
   imports: [

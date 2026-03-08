@@ -23,9 +23,11 @@ import { ManageLeaveComponent } from './manage-leave/manage-leave.component';
 import { QuizzComponent } from './quizz/quizz.component';
 import { ReportComponent } from './report/report.component';
 import { PaymentSuccessComponent } from './payment-success/payment-success.component';
+import { LoadingPageComponent } from './loading-page/loading-page.component';
 
 const routes: Routes = [
   {path : "login", component: LoginPageComponent},
+  {path : "loading", component: LoadingPageComponent},
   {path : "payment-success", component: PaymentSuccessComponent},
   {path : "payment-cancel", component: PaymentSuccessComponent},
   {path : "Dashboard", component: DashboardComponent, canActivate : [AuthGuard]},

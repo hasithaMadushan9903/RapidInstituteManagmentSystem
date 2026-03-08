@@ -755,9 +755,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
     const fields: any = {
       merchant_id: data.merchantId,
-      return_url: 'http://www.edugrowa.com/payment-success',
-      cancel_url: 'http://www.edugrowa.com/payment-cancel',
-      notify_url: 'http://rapidmanagmentsystembe-production.up.railway.app/api/payhere/notify',
+      return_url: 'https://www.edugrowa.com/loading',
+      cancel_url: 'https://www.edugrowa.com/loading',
+      notify_url: 'https://rapidmanagmentsystembe-production.up.railway.app/api/v1/payherectrl/notify',
 
       order_id: data.orderId,
       items: 'Test Payment',
@@ -782,7 +782,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       input.value = fields[key];
       form.appendChild(input);
     }
-
+    
     form.target = '_blank'; // 👈 NEW TAB
     document.body.appendChild(form);
     form.submit();
